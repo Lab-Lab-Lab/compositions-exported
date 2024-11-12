@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compositions</title>
+  <link rel="icon" href="https://fav.farm/🎼">
+</head>
+<body>
+  
+  <script src="https://prod.flat-cdn.com/embed-js/v2.3.0/embed.min.js"></script>
+  <script type="module" src="data.js"></script>
+  <script type="module">
+    import scoreData  from './data.js';
+    // const formElem = document.getElementById('score-select');
+    // const selectElem = document.getElementById('selected-score');
+    // const embedElem = document.getElementById('embed-container');
+    // const preElem = document.getElementById('score-json');
+    // const embed = new Flat.Embed(embedElem, {
+    //     score: 'blank',
+    //     embedParams: {
+    //       appId: '60a51c906bcde01fc75a3ad0',
+    //       layout: 'responsive',
+    //       branding: false,
+    //       themePrimary: '#450084',
+    //       controlsDisplay: false,
+    //       controlsPlay: false,
+    //       controlsFullscreen: false,
+    //       controlsZoom: false,
+    //       controlsPrint: false,
+    //       displayFirstLinePartsNames: false,
+    //       toolsetId: '64be80de738efff96cc27edd',
+    //     },
+    //   });
+      console.log('scoreData', scoreData);
+    scoreData.data.forEach((submission, i) => {
+      const elem = document.createElement('section');
+      elem.id=`container-${i}`;
+      const heading = document.createElement('h2');
+      heading.textContent = submission.assignment_id;
+      const embed = document.createElement('div');
+      embed.id=`embed-${i}`;
+      const pre = document.createElement('pre');
+      pre.id = `pre-${i}`;
+      const detailsElem = document.createElement('details');
+      const summaryElem = document.createElement('summary');
+      detailsElem.append(`score data for ${submission.assignment_id}`);
+      elem.appendChild(heading);
+      elem.appendChild(embed);
+      detailsElem.appendChild(pre);
+      elem.appendChild(detailsElem);
+      document.body.appendChild(elem);
+      const embedInstance = new Flat.Embed(embed, {
+        score: 'blank',
+        embedParams: {
+          appId: '60a51c906bcde01fc75a3ad0',
+          layout: 'responsive',
+          branding: false,
+          themePrimary: '#450084',
+          controlsDisplay: false,
+          controlsPlay: false,
+          controlsFullscreen: false,
+          controlsZoom: false,
+          controlsPrint: false,
+          displayFirstLinePartsNames: false,
+          toolsetId: '64be80de738efff96cc27edd',
+        },
+      });
+      console.log('submission', submission);
+      console.log('submission.score === "N/A for Perform submissions"', submission.score === "N/A for Perform submissions")
+      if (submission.score === "N/A for Perform submissions") {
+        embedInstance.loadJSON('blank')
+        pre.textContent = 'N/A for Perform submissions';
+      } else { 
+        embedInstance.loadJSON(submission.score)
+        pre.textContent = JSON.stringify(submission, null, 2);
+      }
+    });
+    // formElem.addEventListener('change', (event) => {
+    //   if(event.target.value === 'NONE') {
+    //     embed.loadJSON('blank')
+    //     preElem.textContent = '';
+    //     return;
+    //   }
+    //   const submission = scoreData.data.find((submission) => submission.assignment_id == event.target.value);
+    //   if (submission.score === "N/A for Perform submissions") {
+    //     embed.loadJSON('blank')
+    //     preElem.textContent = 'N/A for Perform submissions';
+    //     return;
+    //   }
+    //   preElem.textContent = JSON.stringify(submission, null, 2);
+    //   embed.loadJSON(submission.score)
+    // });
+
+  </script>
+</body>
+</html>
